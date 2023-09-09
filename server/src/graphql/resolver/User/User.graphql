@@ -1,0 +1,15 @@
+type User {
+  id: ID!
+
+  originalId: String!
+
+  createdAt: DateTime!
+
+  phoneNumber: String
+
+  email: String
+
+  nickname: String!
+
+  bio: String
+}

@@ -1,0 +1,45 @@
+type Mutation {
+  """
+  유저 생성
+  """
+  createUser(input: CreateUserInput!): CreateUserOutput!
+
+  """
+  유저 정보 수정
+  """
+  updateUser(input: UpdateUserInput!): UpdateUserOutput!
+}
+
+input CreateUserInput {
+  nickname: String!
+  phoneNumber: String
+  email: String
+}
+
+union CreateUserOutput = CreateUserOutput_Result | Error
+
+type CreateUserOutput_Result {
+  result: CreateUserOutput_ResultPayload!
+}
+
+type CreateUserOutput_ResultPayload {
+  user: User!
+}
+
+input UpdateUserInput {
+  originalUserId: String!
+  nickname: String
+  phoneNumber: String
+  email: String
+  bio: String
+}
+
+union UpdateUserOutput = UpdateUserOutput_Result | Error
+
+type UpdateUserOutput_Result {
+  result: UpdateUserOutput_ResultPayload!
+}
+
+type UpdateUserOutput_ResultPayload {
+  user: User!
+}

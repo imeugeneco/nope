@@ -1,0 +1,7 @@
+type Error {
+  error: ErrorPayload!
+}
+
+type ErrorPayload {
+  message: String!
+}

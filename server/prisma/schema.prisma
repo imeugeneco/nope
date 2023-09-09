@@ -1,0 +1,77 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "linux-musl"]
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("LOCAL_DATA_URL")
+}
+
+model Word {
+  id           Int            @id @default(autoincrement())
+  word         String         @db.VarChar(100)
+  wordOfTheDay WordOfTheDay[]
+
+  @@map("word")
+}
+
+model WordOfTheDay {
+  id     Int      @id @default(autoincrement())
+  date   DateTime @db.Date
+  wordId Int?     @map("word_id")
+
+  word    Word?   @relation(fields: [wordId], references: [id])
+  guesses Guess[]
+
+  @@map("word_of_the_day")
+}
+
+model User {
+  createdAt   DateTime  @default(now()) @map("created_at") @db.DateTime(6)
+  updatedAt   DateTime  @default(now()) @updatedAt @map("updated_at") @db.DateTime(6)
+  deletedAt   DateTime? @map("deleted_at") @db.DateTime(6)
+  id          Int       @id @default(autoincrement())
+  phoneNumber String?   @map("phone_number") @db.VarChar(100)
+  email       String?   @db.VarChar(320)
+  nickname    String    @db.VarChar(150)
+  bio         String?   @db.VarChar(512)
+
+  stats   UserStats[]
+  guesses Guess[]
+
+  @@map("user")
+}
+
+model UserStats {
+  createdAt     DateTime @default(now()) @map("created_at") @db.DateTime(6)
+  updatedAt     DateTime @default(now()) @updatedAt @map("updated_at") @db.DateTime(6)
+  id            Int      @id @default(autoincrement())
+  userId        Int      @map("user_id")
+  playedCount   Int      @default(0) @map("played_count")
+  avgGuesses    Int      @default(0) @map("avg_guesses")
+  hitCount      Int      @default(0) @map("hit_count")
+  currHitStreak Int      @default(0) @map("curr_hit_streak")
+  maxHitStreak  Int      @default(0) @map("max_hit_streak")
+
+  user User @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@map("user_stats")
+}
+
+model Guess {
+  guessedAt      DateTime @default(now()) @map("guessed_at") @db.DateTime(6)
+  id             Int      @id @default(autoincrement())
+  userId         Int      @map("user_id")
+  guessedWord    String   @map("guessed_word")
+  isHit          Boolean  @map("is_hit")
+  wordOfTheDayId Int      @map("word_of_the_day_id")
+
+  user         User         @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  wordOfTheDay WordOfTheDay @relation(fields: [wordOfTheDayId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@map("guess")
+}

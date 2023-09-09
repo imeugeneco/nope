@@ -1,0 +1,41 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "declaration": true,
+    "removeComments": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "target": "ESNext",
+    "sourceMap": true,
+    "outDir": "./dist",
+    "baseUrl": "./",
+    "incremental": true,
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": false,
+    "resolveJsonModule": true,
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true,
+    "importHelpers": true,
+    "paths": {
+      "~/*": ["./src/*"],
+      "@common/*": ["./src/common/*"],
+      "@modules/*": ["./src/modules/*"],
+      "@config/*": ["./src/common/config/*"]
+    }
+  },
+  "ts-node": {
+    "compilerOptions": {
+      "paths": {
+        "~/*": ["./src/*"],
+        "@common/*": ["./src/common/*"],
+        "@modules/*": ["./src/modules/*"],
+        "@config/*": ["./src/config/*"]
+      }
+    }
+  },
+  "exclude": ["node_modules", "dist"],
+  "include": ["src"]
+}
