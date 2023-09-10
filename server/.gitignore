@@ -38,3 +38,4 @@ tmp/
 env*.json
 
 .data
+data/cc.ko.300.vec
