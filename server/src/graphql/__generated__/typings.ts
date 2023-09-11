@@ -68,9 +68,23 @@ export type MutationUpdateUserArgs = {
   input: UpdateUserInput;
 };
 
+export type Node = {
+  /**
+   * Globally unique across all types.
+   * Represents both the type and the original ID of the object.
+   */
+  id: Scalars['ID']['output'];
+};
+
 export type Query = {
   __typename?: 'Query';
+  node?: Maybe<Node>;
   userByOriginalId?: Maybe<User>;
+};
+
+
+export type QueryNodeArgs = {
+  id: Scalars['ID']['input'];
 };
 
 
@@ -98,7 +112,7 @@ export type UpdateUserOutput_ResultPayload = {
   user: User;
 };
 
-export type User = {
+export type User = Node & {
   __typename?: 'User';
   bio?: Maybe<Scalars['String']['output']>;
   createdAt: Scalars['DateTime']['output'];
@@ -182,6 +196,10 @@ export type ResolversUnionTypes<RefType extends Record<string, unknown>> = {
   UpdateUserOutput: ( Error ) | ( Omit<UpdateUserOutput_Result, 'result'> & { result: RefType['UpdateUserOutput_ResultPayload'] } );
 };
 
+/** Mapping of interface types */
+export type ResolversInterfaceTypes<RefType extends Record<string, unknown>> = {
+  Node: ( IUserEntity );
+};
 
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
@@ -196,6 +214,7 @@ export type ResolversTypes = {
   ErrorPayload: ResolverTypeWrapper<ErrorPayload>;
   ID: ResolverTypeWrapper<Scalars['ID']['output']>;
   Mutation: ResolverTypeWrapper<{}>;
+  Node: ResolverTypeWrapper<ResolversInterfaceTypes<ResolversTypes>['Node']>;
   Query: ResolverTypeWrapper<{}>;
   String: ResolverTypeWrapper<Scalars['String']['output']>;
   UpdateUserInput: UpdateUserInput;
@@ -218,6 +237,7 @@ export type ResolversParentTypes = {
   ErrorPayload: ErrorPayload;
   ID: Scalars['ID']['output'];
   Mutation: {};
+  Node: ResolversInterfaceTypes<ResolversParentTypes>['Node'];
   Query: {};
   String: Scalars['String']['output'];
   UpdateUserInput: UpdateUserInput;
@@ -264,7 +284,13 @@ export type MutationResolvers<ContextType = GraphqlContext, ParentType extends R
   updateUser?: Resolver<ResolversTypes['UpdateUserOutput'], ParentType, ContextType, RequireFields<MutationUpdateUserArgs, 'input'>>;
 };
 
+export type NodeResolvers<ContextType = GraphqlContext, ParentType extends ResolversParentTypes['Node'] = ResolversParentTypes['Node']> = {
+  __resolveType: TypeResolveFn<'User', ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+};
+
 export type QueryResolvers<ContextType = GraphqlContext, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
+  node?: Resolver<Maybe<ResolversTypes['Node']>, ParentType, ContextType, RequireFields<QueryNodeArgs, 'id'>>;
   userByOriginalId?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<QueryUserByOriginalIdArgs, 'originalId'>>;
 };
 
@@ -302,6 +328,7 @@ export type Resolvers<ContextType = GraphqlContext> = {
   Error?: ErrorResolvers<ContextType>;
   ErrorPayload?: ErrorPayloadResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
+  Node?: NodeResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   UpdateUserOutput?: UpdateUserOutputResolvers<ContextType>;
   UpdateUserOutput_Result?: UpdateUserOutput_ResultResolvers<ContextType>;

@@ -1,0 +1,7 @@
+interface Node {
+  """
+  Globally unique across all types.
+  Represents both the type and the original ID of the object.
+  """
+  id: ID!
+}

@@ -66,7 +66,16 @@ type Mutation {
   updateUser(input: UpdateUserInput!): UpdateUserOutput!
 }
 
+interface Node {
+  """
+  Globally unique across all types.
+  Represents both the type and the original ID of the object.
+  """
+  id: ID!
+}
+
 type Query {
+  node(id: ID!): Node
   userByOriginalId(originalId: String!): User
 }
 
@@ -88,7 +97,7 @@ type UpdateUserOutput_ResultPayload {
   user: User!
 }
 
-type User {
+type User implements Node {
   bio: String
   createdAt: DateTime!
   email: String
