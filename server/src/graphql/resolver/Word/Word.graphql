@@ -1,0 +1,12 @@
+"""
+오늘의 단어
+"""
+type Word implements Node {
+  id: ID!
+
+  originalId: String!
+
+  date: Date
+
+  word: String!
+}

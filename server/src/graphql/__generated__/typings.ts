@@ -1,6 +1,7 @@
 /* eslint-disable */
 import { GraphQLResolveInfo, GraphQLScalarType, GraphQLScalarTypeConfig } from 'graphql';
 import { IUserEntity } from '~/entity/user.entity';
+import { IWordEntity } from '~/entity/word.entity';
 import { GraphqlContext } from '../context';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
@@ -80,6 +81,7 @@ export type Query = {
   __typename?: 'Query';
   node?: Maybe<Node>;
   userByOriginalId?: Maybe<User>;
+  wordByOriginalId?: Maybe<Word>;
 };
 
 
@@ -89,6 +91,11 @@ export type QueryNodeArgs = {
 
 
 export type QueryUserByOriginalIdArgs = {
+  originalId: Scalars['String']['input'];
+};
+
+
+export type QueryWordByOriginalIdArgs = {
   originalId: Scalars['String']['input'];
 };
 
@@ -121,6 +128,15 @@ export type User = Node & {
   nickname: Scalars['String']['output'];
   originalId: Scalars['String']['output'];
   phoneNumber?: Maybe<Scalars['String']['output']>;
+};
+
+/** 오늘의 단어 */
+export type Word = Node & {
+  __typename?: 'Word';
+  date?: Maybe<Scalars['Date']['output']>;
+  id: Scalars['ID']['output'];
+  originalId: Scalars['String']['output'];
+  word: Scalars['String']['output'];
 };
 
 
@@ -198,7 +214,7 @@ export type ResolversUnionTypes<RefType extends Record<string, unknown>> = {
 
 /** Mapping of interface types */
 export type ResolversInterfaceTypes<RefType extends Record<string, unknown>> = {
-  Node: ( IUserEntity );
+  Node: ( IUserEntity ) | ( IWordEntity );
 };
 
 /** Mapping between all available schema types and the resolvers types */
@@ -222,6 +238,7 @@ export type ResolversTypes = {
   UpdateUserOutput_Result: ResolverTypeWrapper<Omit<UpdateUserOutput_Result, 'result'> & { result: ResolversTypes['UpdateUserOutput_ResultPayload'] }>;
   UpdateUserOutput_ResultPayload: ResolverTypeWrapper<Omit<UpdateUserOutput_ResultPayload, 'user'> & { user: ResolversTypes['User'] }>;
   User: ResolverTypeWrapper<IUserEntity>;
+  Word: ResolverTypeWrapper<IWordEntity>;
 };
 
 /** Mapping between all available schema types and the resolvers parents */
@@ -245,6 +262,7 @@ export type ResolversParentTypes = {
   UpdateUserOutput_Result: Omit<UpdateUserOutput_Result, 'result'> & { result: ResolversParentTypes['UpdateUserOutput_ResultPayload'] };
   UpdateUserOutput_ResultPayload: Omit<UpdateUserOutput_ResultPayload, 'user'> & { user: ResolversParentTypes['User'] };
   User: IUserEntity;
+  Word: IWordEntity;
 };
 
 export type CreateUserOutputResolvers<ContextType = GraphqlContext, ParentType extends ResolversParentTypes['CreateUserOutput'] = ResolversParentTypes['CreateUserOutput']> = {
@@ -285,13 +303,14 @@ export type MutationResolvers<ContextType = GraphqlContext, ParentType extends R
 };
 
 export type NodeResolvers<ContextType = GraphqlContext, ParentType extends ResolversParentTypes['Node'] = ResolversParentTypes['Node']> = {
-  __resolveType: TypeResolveFn<'User', ParentType, ContextType>;
+  __resolveType: TypeResolveFn<'User' | 'Word', ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
 };
 
 export type QueryResolvers<ContextType = GraphqlContext, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
   node?: Resolver<Maybe<ResolversTypes['Node']>, ParentType, ContextType, RequireFields<QueryNodeArgs, 'id'>>;
   userByOriginalId?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<QueryUserByOriginalIdArgs, 'originalId'>>;
+  wordByOriginalId?: Resolver<Maybe<ResolversTypes['Word']>, ParentType, ContextType, RequireFields<QueryWordByOriginalIdArgs, 'originalId'>>;
 };
 
 export type UpdateUserOutputResolvers<ContextType = GraphqlContext, ParentType extends ResolversParentTypes['UpdateUserOutput'] = ResolversParentTypes['UpdateUserOutput']> = {
@@ -319,6 +338,14 @@ export type UserResolvers<ContextType = GraphqlContext, ParentType extends Resol
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export type WordResolvers<ContextType = GraphqlContext, ParentType extends ResolversParentTypes['Word'] = ResolversParentTypes['Word']> = {
+  date?: Resolver<Maybe<ResolversTypes['Date']>, ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  originalId?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  word?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type Resolvers<ContextType = GraphqlContext> = {
   CreateUserOutput?: CreateUserOutputResolvers<ContextType>;
   CreateUserOutput_Result?: CreateUserOutput_ResultResolvers<ContextType>;
@@ -334,5 +361,6 @@ export type Resolvers<ContextType = GraphqlContext> = {
   UpdateUserOutput_Result?: UpdateUserOutput_ResultResolvers<ContextType>;
   UpdateUserOutput_ResultPayload?: UpdateUserOutput_ResultPayloadResolvers<ContextType>;
   User?: UserResolvers<ContextType>;
+  Word?: WordResolvers<ContextType>;
 };
 

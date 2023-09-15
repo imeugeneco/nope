@@ -58,6 +58,7 @@ export default typeDefs
         noNamespaces: true,
         mappers: {
           User: '~/entity/user.entity#IUserEntity',
+          Word: '~/entity/word.entity#IWordEntity',
         },
         scalars: {
           Date: 'string',

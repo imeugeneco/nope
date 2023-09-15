@@ -77,6 +77,7 @@ interface Node {
 type Query {
   node(id: ID!): Node
   userByOriginalId(originalId: String!): User
+  wordByOriginalId(originalId: String!): Word
 }
 
 input UpdateUserInput {
@@ -105,4 +106,12 @@ type User implements Node {
   nickname: String!
   originalId: String!
   phoneNumber: String
+}
+
+"""오늘의 단어"""
+type Word implements Node {
+  date: Date
+  id: ID!
+  originalId: String!
+  word: String!
 }

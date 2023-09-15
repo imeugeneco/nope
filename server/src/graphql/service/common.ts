@@ -15,6 +15,7 @@ const entityTypeMap: Record<
   keyof Resolvers
 > = {
   UserEntity: 'User',
+  WordEntity: 'Word',
 };
 
 export const getTypeName = (
